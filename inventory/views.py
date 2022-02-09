@@ -1,32 +1,36 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 from .models import Ingredient, MenuItem, Purchase
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import DeleteView
 
 
-@login_required
-def home(request):
-    context = {"name": request.user}
-    return render(request, "inventory/home.html", context)
+class HomeView(TemplateView):
+    template_name = "inventory/home.html"
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["ingredients"] = Ingredient.objects.all()
+        context["menu_items"] = MenuItem.objects.all()
+        context["purchases"] = Purchase.objects.all()
+        return context
 
 
-class IngredientList(LoginRequiredMixin, ListView):
+class IngredientView(ListView):
     model = Ingredient
-    template_name = "inventory/ingredient_list.html"
+    template_name = "inventory/ingredients.html"
 
 
-class IngredientDelete(DeleteView):
+class DeleteIngredientView(DeleteView):
     model = Ingredient
-    template_name = "inventory/ingredient_delete_form.html"
+    template_name = "inventory/delete_ingredient.html"
+    success_url = "/ingredients/"
 
 
-class MenuItemList(LoginRequiredMixin, ListView):
+class MenuItemView(ListView):
     model = MenuItem
-    template_name = "inventory/menu_item_list.html"
+    template_name = "inventory/menu.html"
 
 
-class PurchaseList(LoginRequiredMixin, ListView):
+class PurchaseView(ListView):
     model = Purchase
-    template_name = "inventory/purchase_list.html"
+    template_name = "inventory/purchases.html"
