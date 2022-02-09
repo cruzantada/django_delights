@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="{% static 'inventory/style.css' %}" />
+    <title>{% block title %}Django Delights{% endblock %}</title>
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <div class="app">
+        <header>
+            <div class="header-first-row">
+                <h1 class="title">Django Delights</h1>
+            </div>
+            <nav class="navbar">
+                <a class="nav-item" href="{% url 'home' %}">Home</a>
+                <a class="nav-item" href="{% url 'ingredients' %}">Ingredients</a>
+                <a class="nav-item" href="{% url 'menu' %}">Menu</a>
+                <a class="nav-item" href="{% url 'purchases' %}">Purchases</a>
+            </nav>
+        </header>
+        <main>{% block content %}{% endblock %}</main>
+    </div>
+</body>
+
+</html>
